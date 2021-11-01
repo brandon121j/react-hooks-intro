@@ -1,26 +1,46 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
+function App () {
+  const [toggle, setToggle] = useState(false)
+  return (
+    <div className="App">
+      {toggle ? <MouseMove/> : "Nothing to see here"}
+      <button onClick={() => setToggle((prevState) => 
+        setToggle(!prevState))}>
+          Toggle
+        </button>
+    </div>
+  )
+}
 
-  const [number, setNumber] = useState(0);
-  const [anotherNumber, setAnotherNumber] = useState(0)
+function MouseMove() {
+
+  const [mouseX, setMouseX] = useState("0")
+  const [mouseY, setMouseY] = useState("0")
 
   useEffect(() => {
-    console.log("line 6")
-  }, [number]);
+    console.log("Component Did Mount");
+    document.addEventListener("mousemove",
+    handleMouseMove);
+
+    return() => {
+      console.log("Component Will Unmount")
+      document.removeEventListener("mouseover", handleMouseMove)
+    }
+  }, []);
+
+  function handleMouseMove(e) {
+    setMouseY(e.clientY);
+    setMouseX(e.clientX);
+  }
 
 	return (
-		<div className="App">
-      {number}
-      <button onClick={() => setNumber(number + 1)}>+</button>
-      <button onClick={() => setNumber(number - 1)}>-</button>		
-      <hr/>
-      {anotherNumber}
-      <button onClick={() => setAnotherNumber(anotherNumber + 1)}>+</button>
-      <button onClick={() => setAnotherNumber(anotherNumber - 1)}>-</button>		
-
-      </div>
+		<div>
+    <h1>Mouse Moving</h1>
+      <div>Mouse X Position: {mouseX}</div>
+      <div>Mouse Y Position: {mouseY}</div>
+    </div>
 
   );
 }
