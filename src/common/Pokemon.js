@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const Pokemon = () => {
-    const [pokemonList, setPokemonList] = useState([]);
-    const [name, setName] = useState('')
+	const [pokemonList, setPokemonList] = useState([]);
+	const [name, setName] = useState('');
 
-
-
-
-
-
+	useEffect(async () => {
+		fetchPokemon();
+	}, []);
 
 	async function fetchPokemon() {
 		try {
@@ -24,12 +22,17 @@ const Pokemon = () => {
 		}
 	}
 
-
 	return (
-    <div className="App">
-
-    </div>
-    )
+		<div className="App">
+			{pokemonList.map((item) => {
+				return (
+					<div key={item.name}>
+						<Link to={`fetch-pokemon/${item.name}`}>{item.name}</Link>
+					</div>
+				);
+			})}
+		</div>
+	);
 };
 
 export default Pokemon;
