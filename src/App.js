@@ -1,54 +1,41 @@
-import { useState, useEffect } from 'react';
-import './App.css';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 
-function App () {
-  const [toggle, setToggle] = useState(false)
-  return (
-    <div className="App">
-      {toggle ? <MouseMove/> : "Nothing to see here"}
-      <button onClick={() => setToggle((prevState) => 
-        setToggle(!prevState))}>
-          Toggle
-        </button>
-    </div>
-  )
-}
+function App() {
+  const [pokemonList, setPokemonList] = useState([]);
 
-function MouseMove() {
-
-  const [mouseX, setMouseX] = useState("0")
-  const [mouseY, setMouseY] = useState("0")
-
-  useEffect(() => {
-    console.log("Component Did Mount");
-    document.addEventListener("mousemove",
-    handleMouseMove);
-
-    return() => {
-      console.log("Component Will Unmount")
-      document.removeEventListener("mouseover", handleMouseMove)
-    }
+  useEffect(async () => {
+    fetchPokemon();
   }, []);
 
-  function handleMouseMove(e) {
-    setMouseY(e.clientY);
-    setMouseX(e.clientX);
+  async function fetchPokemon() {
+    try {
+      let payload = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon?limit=100&offset=200"
+      );
+
+      setPokemonList(payload.data.results);
+    } catch(e) {
+      console.log(e);
+    }
   }
 
-	return (
-		<div>
-    <h1>Mouse Moving</h1>
-      <div>Mouse X Position: {mouseX}</div>
-      <div>Mouse Y Position: {mouseY}</div>
+  return (
+    <div className="App">
+      {pokemonList.map((item) => {
+        return (
+          <div key={item.name}>{item.name}</div>
+        )
+      })}
     </div>
-
   );
 }
 
 export default App;
 
-/*  
+/*
 
-  useEffect is ComponentDidMount + ComponentDidUpdate + ComponentWilllUnmount
+  useEffect is ComponentDidMount + ComponentDidUpdate + ComponentWillUnmount
 
 */
