@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 
 export const Pokemon = () => {
 	const [pokemonList, setPokemonList] = useState([]);
+	const [name, setName] = useState('');
 
-	useEffect(async() => {
+	useEffect(async () => {
 		fetchPokemon();
-	}, [])
+	}, []);
 
 	async function fetchPokemon() {
 		try {
@@ -25,13 +26,13 @@ export const Pokemon = () => {
 		<div className="App">
 			{pokemonList.map((item) => {
 				return (
-					<Link to={`/fetch-pokemon/${item.name}`}>
-						<div key={item.name}>
-							<Link to={`fetch-pokemon/${item.name}`}>{item.name}</Link>
-						</div>
-					</Link>
+					<div key={item.name}>
+						<Link to={`fetch-pokemon/${item.name}`}>{item.name}</Link>
+					</div>
 				);
 			})}
 		</div>
 	);
 };
+
+
